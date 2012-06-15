@@ -102,9 +102,6 @@ namespace CS.Windows.Controls
 			watermarkTextBox.Opacity = 0;
 			passwordBox.Opacity = 1;
 			Foreground = FocusedForeground;
-
-			if(e.OriginalSource is PasswordBox)
-				passwordBox.Focus();
 		}
 
 		protected override void OnLostFocus( RoutedEventArgs e )
