@@ -18,144 +18,144 @@ using System.Windows.Shapes;
 
 namespace CS.Windows.Controls
 {
-	public class WatermarkPasswordBox : Control
-	{
-		private Brush originalForeground;
-		private WatermarkTextBox watermarkTextBox;
-		private PasswordBox passwordBox;
-		private string passwordSetBeforeTemplateApplied;
+        public class WatermarkPasswordBox : Control
+        {
+                private Brush originalForeground;
+                private WatermarkTextBox watermarkTextBox;
+                private PasswordBox passwordBox;
+                private string passwordSetBeforeTemplateApplied;
 
-		public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register( "Password", typeof( string ), typeof( WatermarkPasswordBox ), new PropertyMetadata( OnPasswordPropertyChanged ) );
+                public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register("Password", typeof(string), typeof(WatermarkPasswordBox), new PropertyMetadata(OnPasswordPropertyChanged));
 
-		public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register( "WatermarkText", typeof( string ), typeof( WatermarkPasswordBox ), null );
+                public static readonly DependencyProperty WatermarkTextProperty = DependencyProperty.Register("WatermarkText", typeof(string), typeof(WatermarkPasswordBox), null);
 
-		public static readonly DependencyProperty WatermarkStyleProperty = DependencyProperty.Register( "WatermarkStyle", typeof( Style ), typeof( WatermarkPasswordBox ), null );
+                public static readonly DependencyProperty WatermarkStyleProperty = DependencyProperty.Register("WatermarkStyle", typeof(Style), typeof(WatermarkPasswordBox), null);
 
-		public static readonly DependencyProperty FocusedForegroundProperty = DependencyProperty.Register( "FocusedForeground", typeof( Brush ), typeof( WatermarkPasswordBox ), null );
+                public static readonly DependencyProperty FocusedForegroundProperty = DependencyProperty.Register("FocusedForeground", typeof(Brush), typeof(WatermarkPasswordBox), null);
 
-		public static readonly DependencyProperty SelectionBackgroundProperty = DependencyProperty.Register( "SelectionBackground", typeof( Brush ), typeof( WatermarkPasswordBox ), null );
+                public static readonly DependencyProperty SelectionBackgroundProperty = DependencyProperty.Register("SelectionBackground", typeof(Brush), typeof(WatermarkPasswordBox), null);
 
-		public static readonly DependencyProperty SelectionForegroundProperty = DependencyProperty.Register( "SelectionForeground", typeof( Brush ), typeof( WatermarkPasswordBox ), null );
+                public static readonly DependencyProperty SelectionForegroundProperty = DependencyProperty.Register("SelectionForeground", typeof(Brush), typeof(WatermarkPasswordBox), null);
 
-		public string Password
-		{
-			get { return GetValue( PasswordProperty ) as string; }
-			set { SetValue( PasswordProperty, value ); }
-		}
+                public string Password
+                {
+                        get { return GetValue(PasswordProperty) as string; }
+                        set { SetValue(PasswordProperty, value); }
+                }
 
-		public string WatermarkText
-		{
-			get { return GetValue( WatermarkTextProperty ) as string; }
-			set { SetValue( WatermarkTextProperty, value ); }
-		}
+                public string WatermarkText
+                {
+                        get { return GetValue(WatermarkTextProperty) as string; }
+                        set { SetValue(WatermarkTextProperty, value); }
+                }
 
-		public Style WatermarkStyle
-		{
-			get { return GetValue( WatermarkStyleProperty ) as Style; }
-			set { SetValue( WatermarkStyleProperty, value ); }
-		}
+                public Style WatermarkStyle
+                {
+                        get { return GetValue(WatermarkStyleProperty) as Style; }
+                        set { SetValue(WatermarkStyleProperty, value); }
+                }
 
-		public Brush FocusedForeground
-		{
-			get { return GetValue( FocusedForegroundProperty ) as Brush; }
-			set { SetValue( FocusedForegroundProperty, value ); }
-		}
+                public Brush FocusedForeground
+                {
+                        get { return GetValue(FocusedForegroundProperty) as Brush; }
+                        set { SetValue(FocusedForegroundProperty, value); }
+                }
 
-		public Brush SelectionBackground
-		{
-			get { return GetValue( SelectionBackgroundProperty ) as Brush; }
-			set { SetValue( SelectionForegroundProperty, value ); }
-		}
+                public Brush SelectionBackground
+                {
+                        get { return GetValue(SelectionBackgroundProperty) as Brush; }
+                        set { SetValue(SelectionForegroundProperty, value); }
+                }
 
-		public Brush SelectionForeground
-		{
-			get { return GetValue( SelectionForegroundProperty ) as Brush; }
-			set { SetValue( SelectionForegroundProperty, value ); }
-		}
+                public Brush SelectionForeground
+                {
+                        get { return GetValue(SelectionForegroundProperty) as Brush; }
+                        set { SetValue(SelectionForegroundProperty, value); }
+                }
 
-		public WatermarkPasswordBox()
-		{
-			DefaultStyleKey = typeof( WatermarkPasswordBox );
-		}
+                public WatermarkPasswordBox()
+                {
+                        DefaultStyleKey = typeof(WatermarkPasswordBox);
+                }
 
-		public override void OnApplyTemplate()
-		{
-			base.OnApplyTemplate();
+                public override void OnApplyTemplate()
+                {
+                        base.OnApplyTemplate();
 
-			originalForeground = Foreground;
+                        originalForeground = Foreground;
 
-			watermarkTextBox = (WatermarkTextBox)GetTemplateChild( "WatermarkElement" );
-			passwordBox = (PasswordBox)GetTemplateChild( "ContentElement" );
-			passwordBox.PasswordChanged += PasswordBoxPasswordChanged;
-			if( !string.IsNullOrEmpty( passwordSetBeforeTemplateApplied ) )
-			{
-				passwordBox.Password = passwordSetBeforeTemplateApplied;
-			}
+                        watermarkTextBox = (WatermarkTextBox)GetTemplateChild("WatermarkElement");
+                        passwordBox = (PasswordBox)GetTemplateChild("ContentElement");
+                        passwordBox.PasswordChanged += PasswordBoxPasswordChanged;
+                        if (!string.IsNullOrEmpty(passwordSetBeforeTemplateApplied))
+                        {
+                                passwordBox.Password = passwordSetBeforeTemplateApplied;
+                        }
 
-			SetWatermarkVisibility();
-		}
+                        SetWatermarkVisibility();
+                }
 
-		protected override void OnGotFocus( RoutedEventArgs e )
-		{
-			base.OnGotFocus( e );
+                protected override void OnGotFocus(RoutedEventArgs e)
+                {
+                        base.OnGotFocus(e);
 
-			watermarkTextBox.Opacity = 0;
-			passwordBox.Opacity = 1;
-			Foreground = FocusedForeground;
+                        watermarkTextBox.Opacity = 0;
+                        passwordBox.Opacity = 1;
+                        Foreground = FocusedForeground;
 
-			if(e.OriginalSource is PasswordBox)
-				passwordBox.Focus();
-		}
+                        if (e.OriginalSource is PasswordBox)
+                                passwordBox.Focus();
+                }
 
-		protected override void OnLostFocus( RoutedEventArgs e )
-		{
-			base.OnLostFocus( e );
+                protected override void OnLostFocus(RoutedEventArgs e)
+                {
+                        base.OnLostFocus(e);
 
-			SetWatermarkVisibility();
-			Foreground = originalForeground;
-		}
+                        SetWatermarkVisibility();
+                        Foreground = originalForeground;
+                }
 
-		private void SetWatermarkVisibility()
-		{
-			watermarkTextBox.Opacity = string.IsNullOrEmpty( Password ) ? 1 : 0;
-			passwordBox.Opacity = !string.IsNullOrEmpty( Password ) ? 1 : 0;
-		}
+                private void SetWatermarkVisibility()
+                {
+                        watermarkTextBox.Opacity = string.IsNullOrEmpty(Password) ? 1 : 0;
+                        passwordBox.Opacity = !string.IsNullOrEmpty(Password) ? 1 : 0;
+                }
 
-		#region Password Binding Hack
+                #region Password Binding Hack
 
-		// This is a hack to bind this control's Password property
-		// to the template's PasswordBox.Password property.
-		// Using Password="{TemplateBinding Password}" does not
-		// work for some reason.
+                // This is a hack to bind this control's Password property
+                // to the template's PasswordBox.Password property.
+                // Using Password="{TemplateBinding Password}" does not
+                // work for some reason.
 
-		public static void OnPasswordPropertyChanged( DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			( (WatermarkPasswordBox)d ).OnPasswordChanged( d, e );
-		}
+                public static void OnPasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+                {
+                        ((WatermarkPasswordBox)d).OnPasswordChanged(d, e);
+                }
 
-		private void OnPasswordChanged(  DependencyObject d, DependencyPropertyChangedEventArgs e )
-		{
-			if( passwordBox == null )
-			{
-				passwordSetBeforeTemplateApplied = Password;
-				return;
-			}
+                private void OnPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+                {
+                        if (passwordBox == null)
+                        {
+                                passwordSetBeforeTemplateApplied = Password;
+                                return;
+                        }
 
-			if( Password != passwordBox.Password )
-			{
-				passwordBox.Password = Password;
-				SetWatermarkVisibility();
-			}
-		}
+                        if (Password != passwordBox.Password)
+                        {
+                                passwordBox.Password = Password;
+                                SetWatermarkVisibility();
+                        }
+                }
 
-		private void PasswordBoxPasswordChanged( object sender, RoutedEventArgs e )
-		{
-			if( passwordBox.Password != Password )
-			{
-				Password = passwordBox.Password;
-			}
-		}
+                private void PasswordBoxPasswordChanged(object sender, RoutedEventArgs e)
+                {
+                        if (passwordBox.Password != Password)
+                        {
+                                Password = passwordBox.Password;
+                        }
+                }
 
-		#endregion
-	}
+                #endregion
+        }
 }
