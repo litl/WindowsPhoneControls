@@ -37,6 +37,10 @@ namespace CS.Windows.Controls
 
 		public static readonly DependencyProperty SelectionForegroundProperty = DependencyProperty.Register( "SelectionForeground", typeof( Brush ), typeof( WatermarkPasswordBox ), null );
 
+		public static readonly DependencyProperty PaswordBoxTabIndexProperty = DependencyProperty.Register("PaswordBoxTabIndex", typeof(int), typeof(WatermarkPasswordBox), null);
+
+		public static readonly DependencyProperty PasswordBoxIsTabStopProperty = DependencyProperty.Register("PasswordBoxIsTabStop", typeof(bool), typeof(WatermarkPasswordBox), null);
+
 		public string Password
 		{
 			get { return GetValue( PasswordProperty ) as string; }
@@ -73,6 +77,18 @@ namespace CS.Windows.Controls
 			set { SetValue( SelectionForegroundProperty, value ); }
 		}
 
+		public bool PasswordBoxIsTabStop
+		{
+			get { return (bool)GetValue(PasswordBoxIsTabStopProperty); }
+			set { SetValue(PasswordBoxIsTabStopProperty, value); }
+		}
+
+		public int PaswordBoxTabIndex
+		{
+			get { return (int)GetValue(PaswordBoxTabIndexProperty); }
+			set { SetValue(PaswordBoxTabIndexProperty, value); }
+		}
+
 		public WatermarkPasswordBox()
 		{
 			DefaultStyleKey = typeof( WatermarkPasswordBox );
@@ -85,8 +101,12 @@ namespace CS.Windows.Controls
 			originalForeground = Foreground;
 
 			watermarkTextBox = (WatermarkTextBox)GetTemplateChild( "WatermarkElement" );
+			
 			passwordBox = (PasswordBox)GetTemplateChild( "ContentElement" );
 			passwordBox.PasswordChanged += PasswordBoxPasswordChanged;
+			passwordBox.TabIndex = PaswordBoxTabIndex;
+			passwordBox.IsTabStop = PasswordBoxIsTabStop;
+
 			if( !string.IsNullOrEmpty( passwordSetBeforeTemplateApplied ) )
 			{
 				passwordBox.Password = passwordSetBeforeTemplateApplied;
